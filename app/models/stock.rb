@@ -2,6 +2,7 @@ class Stock < ActiveRecord::Base
   
   has_many :user_stocks
   has_many :users, through: :user_stocks
+  attr_accessor :can_be_added 
   
   def self.find_by_ticker(ticker_symbol)
     where(ticker: ticker_symbol).first
@@ -14,6 +15,12 @@ class Stock < ActiveRecord::Base
     new_stock.last_price = looked_up_stock.latest_price
     new_stock
   end
+  
+  # 
+  # stock cannot be added beacuse alreay present
+  #
+  # number of stocks greter than 10
+  #
   
   def price
     closing_price = StockQuote::Stock.quote(ticker).close
